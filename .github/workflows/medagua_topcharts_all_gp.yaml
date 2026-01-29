@@ -1,10 +1,10 @@
-name: Run extract keywords
+name: Run topcharts all
 
 on:
   workflow_dispatch:
 
 jobs:
-  run-extract-keywords:
+  run-topcharts-all:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,24 +21,24 @@ jobs:
         with:
           node-version: 20
 
-      - name: Checkout as-explorer (private)
+      - name: Checkout gp-explorer (private)
         uses: actions/checkout@v4
         with:
-          repository: bakkaliomar500/as-explorer
+          repository: bakkaliomar500/gp-explorer
           token: ${{ secrets.GH_PAT }}
           ref: main
-          path: as-explorer
+          path: gp-explorer
           fetch-depth: 1
 
-      - name: Install & run extract:keywords
-        working-directory: as-explorer
+      - name: Install & run topcharts (all collections)
+        working-directory: gp-explorer
         env:
           MONGO_URI: ${{ secrets.MONGO_URI }}
           REDIS_URL: ${{ secrets.REDIS_URL }}
         run: |
           npm ci || npm install
           npm run build --if-present
-          npm run extract:keywords
+          npm run seed:topcharts
 
       - name: Remove this runner IP from MongoDB + Redis allowlist (fw-controller)
         if: always()
