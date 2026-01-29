@@ -1,10 +1,10 @@
-name: Run extract keywords
+name: Run topcharts free
 
 on:
   workflow_dispatch:
 
 jobs:
-  run-extract-keywords:
+  run-topcharts-free:
     runs-on: ubuntu-latest
 
     steps:
@@ -30,7 +30,7 @@ jobs:
           path: gp-explorer
           fetch-depth: 1
 
-      - name: Install & run extract:keywords
+      - name: Install & run topcharts:free
         working-directory: gp-explorer
         env:
           MONGO_URI: ${{ secrets.MONGO_URI }}
@@ -38,7 +38,7 @@ jobs:
         run: |
           npm ci || npm install
           npm run build --if-present
-          npm run extract:keywords
+          npm run seed:topcharts:free
 
       - name: Remove this runner IP from MongoDB + Redis allowlist (fw-controller)
         if: always()
